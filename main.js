@@ -20,7 +20,7 @@ var WikiSettings={
 	"scratcher":true,
 	"days":180,
 	"comment":true,
-	"match":false,
+	"matching":false,
 	"wikiapi":"https://jp.scratch-wiki.info/w/api.php"
 };
 
@@ -75,4 +75,20 @@ function wikiMatch(user){
 	}
 	return false;
 }
-	
+
+function isOkayUser(user){
+	if (wikiSettings.user){
+		if(!isUser(user)){return false;}
+		if (wikiSettings.scratcher){
+			if(!isScratcher(user)){return false;}
+		}
+		if(wikiSettings.days > howLongByNow(user)){return false;}
+		if (wikiSettings.comment){
+			if(!isCommentOpen(user)){return false;}
+		}
+	}
+	if (wikiSettings.matching){
+		if(wikiMatch(user)){return false;}
+	}
+	return true;
+}
