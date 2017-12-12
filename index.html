@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Scratch Wiki Users</title>
+<!--
+(C) 2017 apple502j All rights reversed.
+   This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+</head>
+<body><div style="text-align:center;">
+<form><input type="text" placeholder="Username in Scratch" id="un-box"><input type="submit" name="Go" onclick="check();return false;"></form>
+<output id="dbox"></output>
+</div>
+<script src="main.js" />
+<script>
+function check(){
+  var un=document.getElementById("un-box").value;
+  document.getElementById("dbox").innerHTML = isOkayUser(un)?'<img src="yes.png" alt="YES">YES':'<img src="no.png" alt="NO">NO';
+}
+</script>
+</body></html>
