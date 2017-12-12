@@ -15,6 +15,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+var WikiSettings={
+	"user":true,
+	"scratcher":true,
+	"days":180,
+	"comment":true,
+	"match":false,
+	"wikiapi":"https://jp.scratch-wiki.info/w/api.php"
+};
+
 function isCommentOpen(user){
 	var _xhr=new XMLHttpRequest();
 	_xhr.open("GET","http://scratch.mit.edu/users/" + user,false);
@@ -38,14 +47,32 @@ function isUser(user){
 
 function isScratcher(user){
 	var _xhr=new XMLHttpRequest();
-	_xhr.open("GET","http://scratch.mit.edu/users/" + user,false);
+	_xhr.open("GET","https://scratch.mit.edu/users/" + user,false);
 	_xhr.send();
-	return _xhr.responceText.match(/<span class="group">\n +Scratcher/) != null;
+	return _xhr.responseText.match(/<span class="group">\n +Scratcher/) != null;
 }
 
 function howLongByNow(user){
 	var _xhr=new XMLHttpRequest();
 	_xhr.open("GET","https://api.scratch.mit.edu/users/" + user,false);
 	_xhr.send();
-	var theday = _xhr.responceText.match(/\"joined\": \"20[0-9][0-9]-(0|1)[1-9]-[0-3][0-9]/);
+	var dic = JSON.parse(_xhr.responseText);
+	var theday = new Date(dic.history.joined);
+	var now = new Date();
+	return Math.ceil( (now.getTime() - theday.getTime()) / 1000 / 60 / 60 / 24 );
 }
+
+function wikiMatch(user){
+	var _xhr=new XMLHttpRequest();
+	_xhr.open("GET",WikiSettings.wikiapi + "?action=query&format=json&list=allusers&auprefix=" + user.charAt(0).toUpperCase(),false);
+	_xhr.send();
+	var dic = JSON.parse(_xhr.responseText);
+	var users=dic.query.allusers;
+	for(var i=0;i<users.length;i++){
+	if(users[i].name.toUpperCase().indexOf(user.toUpperCase()) != -1) {
+			return true;
+		}
+	}
+	return false;
+}
+	
